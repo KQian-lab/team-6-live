@@ -2,6 +2,7 @@ import { AssetType } from "./assets";
 import { AnimationType } from "./factory/animation-factory";
 import { Kaboom } from "./kaboom";
 
+// Class the define the enemy and a function for when its hit with a bullet
 export class Alien extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, AssetType.Alien)

@@ -32,6 +32,7 @@ export class MainScene extends Phaser.Scene {
         });
     }
 
+    // This is the preload function in phaser that loads the assets
     preload() {
         this.load.setBaseURL("/assets");
         this.load.image(AssetType.Starfield, "/images/starfield.png");
@@ -48,6 +49,7 @@ export class MainScene extends Phaser.Scene {
         });
     }
 
+    // This function sets up the playing field for the game on start
     create() {
         this.state = GameState.Playing;
         this.starfield = this.add
@@ -73,8 +75,8 @@ export class MainScene extends Phaser.Scene {
         })
     }
 
+    // This function updates the game based on bullets
     update() {
-        this.starfield.tilePositionY -= 1;
         this._shipKeyboardHandler();
         if (this.time.now > this.firingTimer) {
             this._enemyFires();
@@ -96,6 +98,7 @@ export class MainScene extends Phaser.Scene {
         );
     }
 
+    // This function handles the movement of the hero ship
     private _shipKeyboardHandler() {
         let playerBody = this.player.body as Phaser.Physics.Arcade.Body;
         playerBody.setVelocity(0, 0);
@@ -110,6 +113,7 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    // This functions handles when a bullet collides with an enemy
     private _bulletHitAliens(bullet: Bullet, alien: Alien) {
         let explosion: Kaboom = this.assetManager.explosions.get();
         bullet.kill();
@@ -122,6 +126,7 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    // This function handles when an enemy bullet collides with the hero ship
     private _enemyBulletHitPlayer(ship, enemyBullet: EnemyBullet) {
         let explosion: Kaboom = this.assetManager.explosions.get();
         enemyBullet.kill();
@@ -140,6 +145,7 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    // This function handles when an enemy fires a bullet
     private _enemyFires() {
         if (!this.player.active) {
             return;
@@ -153,6 +159,7 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    // This function handles when the hero ship fires a bullet
     private _fireBullet() {
         if (!this.player.active) {
             return;
@@ -167,6 +174,7 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    // This function handles resetting the game playing field
     restart() {
         this.state = GameState.Playing;
         this.player.enableBody(true, this.player.x, this.player.y, true, true);

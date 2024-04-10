@@ -2,6 +2,7 @@ import { EnemyBullet } from "../enemy-bullet";
 import { Bullet } from "../bullet";
 import { Kaboom } from "../kaboom";
 
+// Class that handles creation of new assets when the game is in play (bullets and explosions) and when the game is over
 export class AssetManager {
     bullets: Phaser.Physics.Arcade.Group;
     enemyBullets: Phaser.Physics.Arcade.Group;

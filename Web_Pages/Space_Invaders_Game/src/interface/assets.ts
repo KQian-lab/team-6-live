@@ -1,3 +1,4 @@
+// enum for the different assets in the game
 export enum AssetType {
     Bullet = "bullet",
     EnemyBullet = "enemyBullet",
@@ -6,5 +7,3 @@ export enum AssetType {
     Kaboom = "kaboom",
     Starfield = "starfield",
 }
-
-

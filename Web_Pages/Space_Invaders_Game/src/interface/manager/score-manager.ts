@@ -1,11 +1,13 @@
 import { AssetType } from "../assets";
 
+// This class manages the scoreboard from display to current amount of lives, and the points awarded per alien slayed
 export class ScoreManager {
   scoreText: Phaser.GameObjects.Text;
   line1Text: Phaser.GameObjects.Text;
   line2Text: Phaser.GameObjects.Text;
   lives: Phaser.Physics.Arcade.Group;
 
+  // checks for a game over
   get noMoreLives() {
     return this.lives.countActive(true) === 0;
   }
@@ -47,6 +49,7 @@ export class ScoreManager {
     this._setLivesText(SIZE_X, normalTextConfig);
   }
 
+  // Gives three lives
   private _setLivesText(
     SIZE_X: number,
     textConfig: { fontSize: string; fontFamily: string; fill: string }
@@ -74,6 +77,7 @@ export class ScoreManager {
     }
   }
 
+  // Text display for game over and winning
   setWinText() {
     this._setBigText("YOU WON!", "PRESS SPACE FOR NEW GAME");
   }
@@ -103,6 +107,7 @@ export class ScoreManager {
     this.scoreText.setText(`${this.padding(this.score)}`);
   }
 
+  // Awards 10 points per alien killed
   increaseScore(step = 10) {
     this.score += step;
     this.print();

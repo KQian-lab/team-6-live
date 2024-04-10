@@ -1,5 +1,6 @@
 import { AssetType } from "../assets";
 
+// Factory that defines the animations of the game
 export enum AnimationType {
     Fly = "fly",
     Kaboom = "kaboom"

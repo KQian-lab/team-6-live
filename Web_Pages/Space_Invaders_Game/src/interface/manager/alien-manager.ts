@@ -1,6 +1,7 @@
 import { Alien } from "../alien";
 import { AnimationType } from "../factory/animation-factory";
 
+// Class that manages the aliens from building them, checking how many are still alive, animating them, and resting them
 export class AlienManager {
     aliens: Phaser.Physics.Arcade.Group;
     get hasAliveAliens(): boolean {
