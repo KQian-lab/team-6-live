@@ -1,4 +1,4 @@
-import { AssetType } from "../interface/assets";
+import { AssetType, SoundType } from "../interface/assets";
 import { Bullet } from "../interface/bullet";
 import { AssetManager } from "../interface/manager/asset-manager";
 import { AlienManager } from "../interface/manager/alien-manager";
@@ -47,6 +47,12 @@ export class MainScene extends Phaser.Scene {
             frameWidth: 128,
             frameHeight: 128,
         });
+
+        this.sound.volume = 0.25;
+        this.load.audio(SoundType.Shoot, "/audio/boop.wav");
+        this.load.audio(SoundType.Kaboom, "/audio/boom.wav");
+        this.load.audio(SoundType.PlayerKaboom, "/audio/player_boom.wav");
+        this.load.audio(SoundType.Song, "/audio/boop_song.wav");
     }
 
     // This function sets up the playing field for the game on start
@@ -64,6 +70,7 @@ export class MainScene extends Phaser.Scene {
         this.player = Ship.create(this);
         this.alienManager = new AlienManager(this);
         this.scoreManager = new ScoreManager(this);
+        
 
         this.fireKey.on("down", () => {
             switch (this.state) {
@@ -73,7 +80,12 @@ export class MainScene extends Phaser.Scene {
                     break;
             }
         })
+        var music = this.sound.add(SoundType.Song);
+        music.setLoop(true);
+        music.play();
     }
+
+
 
     // This function updates the game based on bullets
     update() {
@@ -137,6 +149,7 @@ export class MainScene extends Phaser.Scene {
 
         explosion.setPosition(this.player.x, this.player.y);
         explosion.play(AnimationType.Kaboom);
+        this.sound.play(SoundType.PlayerKaboom)
         if (this.scoreManager.noMoreLives) {
             this.scoreManager.setGameOverText();
             this.assetManager.gameOver();

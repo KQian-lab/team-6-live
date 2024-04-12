@@ -7,3 +7,10 @@ export enum AssetType {
     Kaboom = "kaboom",
     Starfield = "starfield",
 }
+
+export enum SoundType {
+    Kaboom = "kaboom",
+    PlayerKaboom = 'playerKaboom',
+    Shoot = "shoot",
+    Song = 'song'
+}
