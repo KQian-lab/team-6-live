@@ -1,7 +1,6 @@
 import '../assets/css/style.css'
 import Phaser from 'phaser'
 import { MainScene } from './scenes/main';
-import { SoundType } from "./interface/assets";
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Space Invaders",

@@ -1,6 +1,6 @@
 # Space Game
 
-This is a Space game created using Phaser and Vite, inspired by an example from Phaser [found here](https://samme.github.io/phaser-examples-mirror/games/invaders.html).
+This is a Space game created using Phaser and Vite, inspired by an example from Phaser [found here](https://samme.github.io/phaser-examples-mirror/games/invaders.html), Then modified to try and fit our GameDesign.md.
 
 ## Getting Started
 
@@ -25,9 +25,9 @@ To run the game locally, follow these steps:
 
 ## Tech Stack
 
-- Vite (Local Server)
+- [Vite](https://vitejs.dev/) (Local Dev Server)
 
-- Phaser (Game Engine)
+- [Phaser](https://phaser.io/) (Game Engine)
 
 ## Credits:
 

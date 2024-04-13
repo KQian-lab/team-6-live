@@ -1,35 +1,29 @@
-import { AssetType } from "../assets";
+import { ImageType } from "../assets";
 
 // Factory that defines the animations of the game
 export enum AnimationType {
     Fly = "fly",
-    Kaboom = "kaboom"
+    Explosion = "explosion"
 }
 
 export class AnimationFactory {
     constructor(private _scene: Phaser.Scene) {
-        this._init();
+        this._init_();
     }
 
-    private _init() {
+    private _init_() {
         // Generates the fly animation of the aliens from the Spritesheet frames
         this._scene.anims.create({
             key: AnimationType.Fly,
-            frames: this._scene.anims.generateFrameNumbers(AssetType.Alien, {
-                start: 0,
-                end: 3
-            }),
+            frames: this._scene.anims.generateFrameNumbers(ImageType.Alien, {start: 0, end: 3}),
             frameRate: 20,
             repeat: -1
         });
 
-        // Generates the explosion animation from the spritesheet frames
+        // Generates the explosion animation from the Spritesheet frames
         this._scene.anims.create({
-            key: AnimationType.Kaboom,
-            frames: this._scene.anims.generateFrameNumbers(AssetType.Kaboom, {
-                start: 0,
-                end: 15
-            }),
+            key: AnimationType.Explosion,
+            frames: this._scene.anims.generateFrameNumbers(ImageType.Explosion, {start: 0, end: 15}),
             frameRate: 24,
             repeat: 0,
             hideOnComplete: true

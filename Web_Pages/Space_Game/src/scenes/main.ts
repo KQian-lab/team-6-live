@@ -1,4 +1,4 @@
-import { AssetType, SoundType } from "../interface/assets";
+import { ImageType, SoundType } from "../interface/assets";
 import { Bullet } from "../interface/bullet";
 import { AssetManager } from "../interface/manager/asset-manager";
 import { AlienManager } from "../interface/manager/alien-manager";
@@ -8,7 +8,7 @@ import {
     AnimationType,
 } from "../interface/factory/animation-factory";
 import { Alien } from "../interface/alien";
-import { Kaboom } from "../interface/kaboom";
+import { Explosion } from "../interface/explosion";
 import { EnemyBullet } from "../interface/enemy-bullet";
 import { ScoreManager } from "../interface/manager/score-manager";
 import { GameState } from "../interface/game-state";
@@ -36,15 +36,15 @@ export class MainScene extends Phaser.Scene {
     preload() {
         // Load images
         this.load.setBaseURL("/assets");
-        this.load.image(AssetType.Starfield, "/images/starfield.png");
-        this.load.image(AssetType.Bullet, "/images/bullet.png");
-        this.load.image(AssetType.EnemyBullet, "/images/enemy-bullet.png");
-        this.load.spritesheet(AssetType.Alien, "/images/invader.png", {
+        this.load.image(ImageType.Starfield, "/images/starfield.png");
+        this.load.image(ImageType.Bullet, "/images/bullet.png");
+        this.load.image(ImageType.EnemyBullet, "/images/enemy-bullet.png");
+        this.load.spritesheet(ImageType.Alien, "/images/invader.png", {
             frameWidth: 32,
             frameHeight: 32,
         });
-        this.load.image(AssetType.Ship, "/images/player.png");
-        this.load.spritesheet(AssetType.Kaboom, "/images/explode.png", {
+        this.load.image(ImageType.Ship, "/images/player.png");
+        this.load.spritesheet(ImageType.Explosion, "/images/explode.png", {
             frameWidth: 128,
             frameHeight: 128,
         });
@@ -60,7 +60,7 @@ export class MainScene extends Phaser.Scene {
     create() {
         this.state = GameState.Playing;
         this.starfield = this.add
-            .tileSprite(0, 0, 800, 600, AssetType.Starfield)
+            .tileSprite(0, 0, 800, 600, ImageType.Starfield)
             .setOrigin(0, 0);
         this.assetManager = new AssetManager(this);
         this.animationFactory = new AnimationFactory(this);
@@ -97,16 +97,16 @@ export class MainScene extends Phaser.Scene {
         this.starfield.tilePositionY -= 0.5;
 
         // update to keep  the aliens firing at the hero
-        this._shipKeyboardHandler();
+        this.shipKeyboardHandler();
         if (this.time.now > this.firingTimer) {
             this._enemyFires();
         }
 
-        // Check for bullet collikson w/ an alien
+        // Check for bullet collision w/ an alien
         this.physics.overlap(
             this.assetManager.bullets,
             this.alienManager.aliens,
-            this._bulletHitAliens,
+            this.bulletHitAliens,
             null,
             this
         );
@@ -114,14 +114,14 @@ export class MainScene extends Phaser.Scene {
         this.physics.overlap(
             this.assetManager.enemyBullets,
             this.player,
-            this._enemyBulletHitPlayer,
+            this.enemyBulletHitPlayer,
             null,
             this
         );
     }
 
     // This function handles the movement of the hero ship
-    private _shipKeyboardHandler() {
+    private shipKeyboardHandler() {
         let playerBody = this.player.body as Phaser.Physics.Arcade.Body;
         playerBody.setVelocity(0, 0);
         if (this.cursors.left.isDown) {
@@ -138,8 +138,8 @@ export class MainScene extends Phaser.Scene {
     }
 
     // This functions handles when a bullet collides with an enemy
-    private _bulletHitAliens(bullet: Bullet, alien: Alien) {
-        let explosion: Kaboom = this.assetManager.explosions.get();
+    private bulletHitAliens(bullet: Bullet, alien: Alien) {
+        let explosion: Explosion = this.assetManager.explosions.get();
         bullet.kill();
         alien.kill(explosion);
         this.scoreManager.increaseScore();
@@ -151,8 +151,8 @@ export class MainScene extends Phaser.Scene {
     }
 
     // This function handles when an enemy bullet collides with the hero ship
-    private _enemyBulletHitPlayer(ship, enemyBullet: EnemyBullet) {
-        let explosion: Kaboom = this.assetManager.explosions.get();
+    private enemyBulletHitPlayer(ship, enemyBullet: EnemyBullet) {
+        let explosion: Explosion = this.assetManager.explosions.get();
         enemyBullet.kill();
         let live: Phaser.GameObjects.Sprite = this.scoreManager.lives.getFirstAlive();
         if (live) {
@@ -161,9 +161,10 @@ export class MainScene extends Phaser.Scene {
 
         // Explosion on collision and change game state if player is out of lives
         explosion.setPosition(this.player.x, this.player.y);
-        explosion.play(AnimationType.Kaboom);
+        explosion.play(AnimationType.Explosion);
         this.sound.play(SoundType.PlayerKaboom)
         if (this.scoreManager.noMoreLives) {
+            this.scoreManager.resetScore();
             this.scoreManager.setGameOverText();
             this.assetManager.gameOver();
             this.state = GameState.GameOver;

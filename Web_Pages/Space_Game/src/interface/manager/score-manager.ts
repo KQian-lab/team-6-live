@@ -1,4 +1,4 @@
-import { AssetType } from "../assets";
+import { ImageType } from "../assets";
 
 // This class manages the scoreboard from display to current amount of lives, and the points awarded per alien slayed
 export class ScoreManager {
@@ -46,11 +46,11 @@ export class ScoreManager {
       .text(SIZE_X / 2, 400, "", bigTextConfig)
       .setOrigin(0.5);
 
-    this._setLivesText(SIZE_X, normalTextConfig);
+    this.setLivesText(SIZE_X, normalTextConfig);
   }
 
   // Gives three lives
-  private _setLivesText(
+  private setLivesText(
     SIZE_X: number,
     textConfig: { fontSize: string; fontFamily: string; fill: string }
   ) {
@@ -69,7 +69,7 @@ export class ScoreManager {
       let ship: Phaser.GameObjects.Sprite = this.lives.create(
         SIZE_X - 100 + 30 * i,
         60,
-        AssetType.Ship
+        ImageType.Ship
       );
       ship.setOrigin(0.5, 0.5);
       ship.setAngle(90);
@@ -86,6 +86,7 @@ export class ScoreManager {
     this._setBigText("GAME OVER", "PRESS SPACE FOR NEW GAME");
   }
 
+  // Clears text on screen
   hideText() {
     this._setBigText("", "")
   }
@@ -115,5 +116,10 @@ export class ScoreManager {
 
   padding(num: number) {
     return `${num}`.padStart(4, "0");
+  }
+
+  resetScore() {
+    this.score = 0;
+    this.print();
   }
 }

@@ -1,6 +1,6 @@
 import { EnemyBullet } from "../enemy-bullet";
 import { Bullet } from "../bullet";
-import { Kaboom } from "../kaboom";
+import { Explosion } from "../explosion";
 
 // Class that handles creation of new assets when the game is in play (bullets and explosions) and when the game is over
 export class AssetManager {
@@ -54,7 +54,7 @@ export class AssetManager {
     private _createExplosions(): Phaser.Physics.Arcade.Group {
         let explosions = this._scene.physics.add.group({
             max: 0,
-            classType: Kaboom,
+            classType: Explosion,
             runChildUpdate: true
         });
 
