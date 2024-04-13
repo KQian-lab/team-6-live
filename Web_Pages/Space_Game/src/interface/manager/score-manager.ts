@@ -114,12 +114,13 @@ export class ScoreManager {
     this.print();
   }
 
-  padding(num: number) {
-    return `${num}`.padStart(4, "0");
-  }
-
+  // Reset the score to zero (Used for Game Over)
   resetScore() {
     this.score = 0;
     this.print();
+  }
+
+  padding(num: number) {
+    return `${num}`.padStart(4, "0");
   }
 }

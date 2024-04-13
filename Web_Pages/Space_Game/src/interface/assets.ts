@@ -6,6 +6,7 @@ export enum ImageType {
     Alien = "alien",
     Bullet = "bullet",
     Ship = "ship",
+    Repair = "repair",
     Explosion = "explosion",
     Starfield = "starfield",
 }

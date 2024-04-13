@@ -12,6 +12,7 @@ import { Explosion } from "../interface/explosion";
 import { EnemyBullet } from "../interface/enemy-bullet";
 import { ScoreManager } from "../interface/manager/score-manager";
 import { GameState } from "../interface/game-state";
+import { Repair } from "../interface/repair";
 
 export class MainScene extends Phaser.Scene {
     state: GameState;
@@ -20,6 +21,7 @@ export class MainScene extends Phaser.Scene {
     scoreManager: ScoreManager;
     bulletTime = 0;
     firingTimer = 0;
+    repairTimer = this.getRandomInt(15000,30000);
     starfield: Phaser.GameObjects.TileSprite;
     player: Phaser.Physics.Arcade.Sprite;
     alienManager: AlienManager;
@@ -39,6 +41,7 @@ export class MainScene extends Phaser.Scene {
         this.load.image(ImageType.Starfield, "/images/starfield.png");
         this.load.image(ImageType.Bullet, "/images/bullet.png");
         this.load.image(ImageType.EnemyBullet, "/images/enemy-bullet.png");
+        this.load.image(ImageType.Repair, "/images/repair.png")
         this.load.spritesheet(ImageType.Alien, "/images/invader.png", {
             frameWidth: 32,
             frameHeight: 32,
@@ -102,6 +105,11 @@ export class MainScene extends Phaser.Scene {
             this._enemyFires();
         }
 
+        // Update for the repair pack being spawned
+        if (this.time.now > this.repairTimer){
+            this._repairSpawm();
+        }
+
         // Check for bullet collision w/ an alien
         this.physics.overlap(
             this.assetManager.bullets,
@@ -110,11 +118,21 @@ export class MainScene extends Phaser.Scene {
             null,
             this
         );
+        
         // Check for an enemy bullet overlap w/ the player
         this.physics.overlap(
             this.assetManager.enemyBullets,
             this.player,
             this.enemyBulletHitPlayer,
+            null,
+            this
+        );
+
+        // Check for a repair pack overlap with hero ship
+        this.physics.overlap(
+            this.assetManager.repair,
+            this.player,
+            this.playerGetsRepair,
             null,
             this
         );
@@ -150,6 +168,12 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    // If player gets a repair pack, reset the lives count
+    private playerGetsRepair(ship, repair: Repair){
+        repair.kill();
+        this.scoreManager.resetLives();
+    }
+
     // This function handles when an enemy bullet collides with the hero ship
     private enemyBulletHitPlayer(ship, enemyBullet: EnemyBullet) {
         let explosion: Explosion = this.assetManager.explosions.get();
@@ -169,6 +193,20 @@ export class MainScene extends Phaser.Scene {
             this.assetManager.gameOver();
             this.state = GameState.GameOver;
             this.player.disableBody(true, true);
+        }
+    }
+
+    // Function to handle the repair pack spawn
+    private _repairSpawm(){
+        if (!this.player.active) {
+            return;
+        }
+        let repair: Repair = this.assetManager.repair.get();
+        if (repair) {
+            let x = this.getRandomInt(50,751);
+            repair.move(x);
+            let coolDownTime = this.getRandomInt(30000,60000);
+            this.repairTimer = this.time.now + coolDownTime;
         }
     }
 
@@ -201,6 +239,13 @@ export class MainScene extends Phaser.Scene {
                 this.bulletTime = this.time.now + 200;
             }
         }
+    }
+
+    // Function to get a random int, used for making a random time for new spawns
+    private getRandomInt(min: number, max: number) {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
     }
 
     // This function handles resetting the game playing field
