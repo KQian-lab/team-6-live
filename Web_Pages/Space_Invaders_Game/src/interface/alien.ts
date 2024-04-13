@@ -8,6 +8,7 @@ export class Alien extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, AssetType.Alien)
   }
 
+  // function when alien is killed, play explosion, then remove the asset from the screen
   kill(explosion: Kaboom) {
     if (explosion) {
       explosion.setX(this.x);

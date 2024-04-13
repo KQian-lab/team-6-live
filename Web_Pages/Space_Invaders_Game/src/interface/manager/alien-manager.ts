@@ -19,18 +19,21 @@ export class AlienManager {
         this._animate();
     }
 
+    // Grabs a random alive enemy to shoot a bullet when called
     getRandomAliveEnemy(): Alien {
         let random = Phaser.Math.RND.integerInRange(1, this.aliens.children.size);
         let aliens = this.aliens.children.getArray() as Alien[];
         return aliens[random];
     }
 
+    // Call on game reset
     reset() {
         this._sortAliens();
         this._animate();
     }
 
     private _sortAliens() {
+        // Builds 40 enemies in a 4x10 grid
         let ORIGIN_X = 100;
         let ORIGIN_Y = 100;
         this.aliens.clear(true, true);
@@ -44,6 +47,7 @@ export class AlienManager {
         }
     }
 
+    // animation of the aliens flying
     private _animate() {
         this.aliens.children.iterate((c: Alien) => {
             this._scene.tweens.add({

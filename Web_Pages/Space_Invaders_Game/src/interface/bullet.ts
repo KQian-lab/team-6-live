@@ -6,6 +6,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         super(scene, 0, 0, AssetType.Bullet);
     }
 
+    // Defines when the player shoots
     shoot(x: number, y: number) {
         this.scene.sound.play(SoundType.Shoot)
         this.setPosition(x, y);

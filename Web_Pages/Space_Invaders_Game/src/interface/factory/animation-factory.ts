@@ -12,6 +12,7 @@ export class AnimationFactory {
     }
 
     private _init() {
+        // Generates the fly animation of the aliens from the Spritesheet frames
         this._scene.anims.create({
             key: AnimationType.Fly,
             frames: this._scene.anims.generateFrameNumbers(AssetType.Alien, {
@@ -22,6 +23,7 @@ export class AnimationFactory {
             repeat: -1
         });
 
+        // Generates the explosion animation from the spritesheet frames
         this._scene.anims.create({
             key: AnimationType.Kaboom,
             frames: this._scene.anims.generateFrameNumbers(AssetType.Kaboom, {

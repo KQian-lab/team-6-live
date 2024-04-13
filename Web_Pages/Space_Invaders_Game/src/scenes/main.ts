@@ -34,6 +34,7 @@ export class MainScene extends Phaser.Scene {
 
     // This is the preload function in phaser that loads the assets
     preload() {
+        // Load images
         this.load.setBaseURL("/assets");
         this.load.image(AssetType.Starfield, "/images/starfield.png");
         this.load.image(AssetType.Bullet, "/images/bullet.png");
@@ -47,7 +48,7 @@ export class MainScene extends Phaser.Scene {
             frameWidth: 128,
             frameHeight: 128,
         });
-
+        // Load audio
         this.sound.volume = 0.25;
         this.load.audio(SoundType.Shoot, "/audio/boop.wav");
         this.load.audio(SoundType.Kaboom, "/audio/boom.wav");
@@ -64,6 +65,7 @@ export class MainScene extends Phaser.Scene {
         this.assetManager = new AssetManager(this);
         this.animationFactory = new AnimationFactory(this);
         this.cursors = this.input.keyboard.createCursorKeys();
+        // Setting space key to be the fire key
         this.fireKey = this.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.SPACE
         );
@@ -72,6 +74,7 @@ export class MainScene extends Phaser.Scene {
         this.scoreManager = new ScoreManager(this);
         
 
+        // Set space key top restart after win or game over
         this.fireKey.on("down", () => {
             switch (this.state) {
                 case GameState.Win:
@@ -80,6 +83,7 @@ export class MainScene extends Phaser.Scene {
                     break;
             }
         })
+        // Add background music on a loop
         var music = this.sound.add(SoundType.Song);
         music.setLoop(true);
         music.play();
@@ -89,11 +93,16 @@ export class MainScene extends Phaser.Scene {
 
     // This function updates the game based on bullets
     update() {
+        // Make the background move
+        this.starfield.tilePositionY -= 0.5;
+
+        // update to keep  the aliens firing at the hero
         this._shipKeyboardHandler();
         if (this.time.now > this.firingTimer) {
             this._enemyFires();
         }
 
+        // Check for bullet collikson w/ an alien
         this.physics.overlap(
             this.assetManager.bullets,
             this.alienManager.aliens,
@@ -101,6 +110,7 @@ export class MainScene extends Phaser.Scene {
             null,
             this
         );
+        // Check for an enemy bullet overlap w/ the player
         this.physics.overlap(
             this.assetManager.enemyBullets,
             this.player,
@@ -120,6 +130,8 @@ export class MainScene extends Phaser.Scene {
             playerBody.setVelocityX(200);
         }
 
+
+        // check for if the space key is pressed. If so, fire a bullet
         if (this.fireKey.isDown) {
             this._fireBullet();
         }
@@ -147,6 +159,7 @@ export class MainScene extends Phaser.Scene {
             live.setActive(false).setVisible(false);
         }
 
+        // Explosion on collision and change game state if player is out of lives
         explosion.setPosition(this.player.x, this.player.y);
         explosion.play(AnimationType.Kaboom);
         this.sound.play(SoundType.PlayerKaboom)
@@ -165,6 +178,8 @@ export class MainScene extends Phaser.Scene {
         }
         let enemyBullet: EnemyBullet = this.assetManager.enemyBullets.get();
         let randomEnemy = this.alienManager.getRandomAliveEnemy();
+
+        // Check to fire an enemy bullet every two seconds and aim it towards the player ship
         if (enemyBullet && randomEnemy) {
             enemyBullet.setPosition(randomEnemy.x, randomEnemy.y);
             this.physics.moveToObject(enemyBullet, this.player, 120);
@@ -172,12 +187,12 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
-    // This function handles when the hero ship fires a bullet
+    // This function handles when the player ship fires, limits to a rate of one bullet per 200ms
     private _fireBullet() {
         if (!this.player.active) {
             return;
         }
-
+        // Checks to fire the a bullet every two seconds
         if (this.time.now > this.bulletTime) {
             let bullet: Bullet = this.assetManager.bullets.get();
             if (bullet) {
