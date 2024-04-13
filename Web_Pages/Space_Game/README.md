@@ -1,6 +1,6 @@
-# Space Invaders Game
+# Space Game
 
-This is a Space Invaders game created using Phaser and Vite, inspired by an example from Phaser [found here](https://samme.github.io/phaser-examples-mirror/games/invaders.html).
+This is a Space game created using Phaser and Vite, inspired by an example from Phaser [found here](https://samme.github.io/phaser-examples-mirror/games/invaders.html).
 
 ## Getting Started
 
@@ -15,7 +15,6 @@ To run the game locally, follow these steps:
 
     ```bash
     npm run dev
-
 4. Open your browser and navigate to the port specified in the terminal.
 
 ## Controls
@@ -26,9 +25,9 @@ To run the game locally, follow these steps:
 
 ## Tech Stack
 
-- Vite
+- Vite (Local Server)
 
-- Phaser
+- Phaser (Game Engine)
 
 ## Credits:
 
