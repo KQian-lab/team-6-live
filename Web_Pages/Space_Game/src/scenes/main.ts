@@ -25,8 +25,7 @@ export class MainScene extends Phaser.Scene {
     firingTimer = 0;
     repairTimer = this.getRandomInt(30000,60000);
     gasTimer = this.getRandomInt(15000,30000);
-    //stealthTimer = this.getRandomInt(60000,90000);
-    stealthTimer = this.getRandomInt(600,900);
+    stealthTimer = this.getRandomInt(60000,90000);
     stealthDuration = 15000;
     isStealth = false;
     stealthDurationTimer = 0;
@@ -114,10 +113,9 @@ export class MainScene extends Phaser.Scene {
         // Make the background move
         this.starfield.tilePositionY -= 0.5;
 
-        // update to keep  the aliens firing at the hero
         this.shipKeyboardHandler();
 
-
+        // update to keep  the aliens firing at the hero
         if (this.time.now > this.firingTimer && !(this.isStealth)) {
             this._enemyFires();
         }
@@ -132,11 +130,12 @@ export class MainScene extends Phaser.Scene {
             this._gasSpawn();
         }
 
+        // Update for the stealth pack being spawned
         if (this.time.now > this.stealthTimer){
             this._stealthSpawn();
         }
 
-
+        // Update for ending the stealth power-up
         if (this.isStealth && this.time.now > this.stealthDurationTimer){
             this.player.setAlpha(1);
             this.sound.play(SoundType.StealthEnd)
@@ -179,6 +178,7 @@ export class MainScene extends Phaser.Scene {
             this
         );
 
+        // Check for stealth pack overlap w/ the player ship
         this.physics.overlap(
             this.assetManager.stealth,
             this.player,
