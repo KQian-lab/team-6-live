@@ -7,7 +7,7 @@ export class Stealth extends Phaser.Physics.Arcade.Sprite {
 
     move(x: number) {
         this.setPosition(x, 50);
-        this.setVelocityY(120);
+        this.setVelocityY(360);
     }
 
     kill() {

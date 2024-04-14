@@ -33,11 +33,13 @@ To run the game locally, follow these steps:
 
 ### Audio files: 
 
-All audio files where made by Tommy Soda
+All audio files where made by [Tommy Soda](https://open.spotify.com/artist/7lxF3itdz3wshmMpQwsvmb)
 
 ### Images:
 
 Background (starfield): Tommy Soda
+
+Gas Cloud: Tommy Soda
 
 Player ship: Patrick Sharp
 
@@ -45,4 +47,10 @@ Bullet: Patrick Sharp
 
 Enemy Bullet: Patrick Sharp
 
-All other assets as of now are from the Phaser example
+Aliens: Patrick Sharp
+
+Repair Pack: Patrick Sharp
+
+Stealth Pack: Patrick Sharp
+
+Explosion: From the phaser example

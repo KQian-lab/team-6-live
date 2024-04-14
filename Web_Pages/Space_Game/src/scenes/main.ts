@@ -13,7 +13,8 @@ import { EnemyBullet } from "../interface/enemy-bullet";
 import { ScoreManager } from "../interface/manager/score-manager";
 import { GameState } from "../interface/game-state";
 import { Repair } from "../interface/repair";
-import { Gas} from "../interface/gas"
+import { Gas } from "../interface/gas"
+import { Stealth } from "../interface/stealth"
 
 export class MainScene extends Phaser.Scene {
     state: GameState;
@@ -24,8 +25,11 @@ export class MainScene extends Phaser.Scene {
     firingTimer = 0;
     repairTimer = this.getRandomInt(30000,60000);
     gasTimer = this.getRandomInt(15000,30000);
-    stealthTimer = this.getRandomInt(60000,90000);
+    //stealthTimer = this.getRandomInt(60000,90000);
+    stealthTimer = this.getRandomInt(600,900);
     stealthDuration = 15000;
+    isStealth = false;
+    stealthDurationTimer = 0;
     starfield: Phaser.GameObjects.TileSprite;
     player: Phaser.Physics.Arcade.Sprite;
     alienManager: AlienManager;
@@ -88,15 +92,15 @@ export class MainScene extends Phaser.Scene {
         this.scoreManager = new ScoreManager(this);
         
 
-        // Set space key top restart after win or game over
+        // Set space key to restart after game over
         this.fireKey.on("down", () => {
             switch (this.state) {
-                case GameState.Win:
                 case GameState.GameOver:
                     this.restart();
                     break;
             }
         })
+
         // Add background music on a loop
         var music = this.sound.add(SoundType.Song);
         music.setLoop(true);
@@ -105,14 +109,16 @@ export class MainScene extends Phaser.Scene {
 
 
 
-    // This function updates the game based on bullets
+    // This function checks for updates periodically during game play
     update() {
         // Make the background move
         this.starfield.tilePositionY -= 0.5;
 
         // update to keep  the aliens firing at the hero
         this.shipKeyboardHandler();
-        if (this.time.now > this.firingTimer) {
+
+
+        if (this.time.now > this.firingTimer && !(this.isStealth)) {
             this._enemyFires();
         }
 
@@ -121,9 +127,19 @@ export class MainScene extends Phaser.Scene {
             this._repairSpawn();
         }
 
-        // Update for the repair pack being spawned
+        // Update for the gas being spawned
         if (this.time.now > this.gasTimer){
             this._gasSpawn();
+        }
+
+        if (this.time.now > this.stealthTimer){
+            this._stealthSpawn();
+        }
+
+
+        if (this.isStealth && this.time.now > this.stealthDurationTimer){
+            this.player.setAlpha(1);
+            this.isStealth = false;
         }
 
         // Check for bullet collision w/ an alien
@@ -161,6 +177,14 @@ export class MainScene extends Phaser.Scene {
             null,
             this
         );
+
+        this.physics.overlap(
+            this.assetManager.stealth,
+            this.player,
+            this.playerGetsStealth,
+            null,
+            this
+        )
     }
 
     // This function handles the movement of the hero ship
@@ -194,14 +218,22 @@ export class MainScene extends Phaser.Scene {
     }
 
     // If player gets a repair pack, reset the lives count
-    private playerGetsRepair(ship, repair: Repair){
+    private playerGetsRepair(ship: Ship, repair: Repair){
         repair.kill();
         this.sound.play(SoundType.Repair);
         this.scoreManager.resetLives();
     }
 
+    private playerGetsStealth(ship: Ship, stealth: Stealth){
+        stealth.kill();
+        this.sound.play(SoundType.Stealth);
+        ship.setAlpha(0.5)
+        this.isStealth = true;
+        this.stealthDurationTimer = this.time.now + this.stealthDuration;
+    }
+
     // If player hits a gas cloud
-    private gasHitPlayer (ship, gas: Gas){
+    private gasHitPlayer (ship: Ship, gas: Gas){
         gas.kill();
         let live: Phaser.GameObjects.Sprite = this.scoreManager.lives.getFirstAlive();
         if (live) {
@@ -219,7 +251,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     // This function handles when an enemy bullet collides with the hero ship
-    private enemyBulletHitPlayer(ship, enemyBullet: EnemyBullet) {
+    private enemyBulletHitPlayer(ship: Ship, enemyBullet: EnemyBullet) {
         let explosion: Explosion = this.assetManager.explosions.get();
         enemyBullet.kill();
         let live: Phaser.GameObjects.Sprite = this.scoreManager.lives.getFirstAlive();
@@ -265,6 +297,19 @@ export class MainScene extends Phaser.Scene {
             this.physics.moveToObject(gas, this.player, 250);
             let coolDownTime = this.getRandomInt(30000,60000);
             this.gasTimer = this.time.now + coolDownTime;
+        }
+    }
+
+    private _stealthSpawn (){
+        if (!this.player.active) {
+            return;
+        }
+        let stealth: Stealth = this.assetManager.stealth.get();
+        if (stealth) {
+            let x = this.getRandomInt(50,751);
+            stealth.move(x);
+            let coolDownTime = this.getRandomInt(60000,90000);
+            this.stealthTimer = this.time.now + coolDownTime + this.stealthDuration;
         }
     }
 
