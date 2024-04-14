@@ -71,7 +71,7 @@ export class MainScene extends Phaser.Scene {
         this.load.audio(SoundType.Gas, "/audio/gas_powerdown.wav");
         this.load.audio(SoundType.Repair, "/audio/repair_powerup.wav");
         this.load.audio(SoundType.Stealth, "/audio/stealth_powerup.wav");
-        this.load.audio(SoundType.StealthMode, "/audio/stealth_woowoo.wav");
+        this.load.audio(SoundType.StealthEnd, "/audio/stealth_powerdown.wav");
     }
 
     // This function sets up the playing field for the game on start
@@ -139,6 +139,7 @@ export class MainScene extends Phaser.Scene {
 
         if (this.isStealth && this.time.now > this.stealthDurationTimer){
             this.player.setAlpha(1);
+            this.sound.play(SoundType.StealthEnd)
             this.isStealth = false;
         }
 

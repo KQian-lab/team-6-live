@@ -22,5 +22,5 @@ export enum SoundType {
     Gas = "gas",
     Repair = "repair",
     Stealth = "stealth",
-    StealthMode = "stealthMode"
+    StealthEnd = "stealthEnd"
 }
