@@ -44,7 +44,7 @@ export class MainScene extends Phaser.Scene {
         this.load.image(ImageType.Repair, "/images/repair.png")
         this.load.spritesheet(ImageType.Alien, "/images/invader.png", {
             frameWidth: 32,
-            frameHeight: 32,
+            frameHeight: 36,
         });
         this.load.image(ImageType.Ship, "/images/player.png");
         this.load.spritesheet(ImageType.Explosion, "/images/explode.png", {

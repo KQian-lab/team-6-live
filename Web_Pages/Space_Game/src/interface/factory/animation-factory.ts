@@ -15,8 +15,8 @@ export class AnimationFactory {
         // Generates the fly animation of the aliens from the Spritesheet frames
         this._scene.anims.create({
             key: AnimationType.Fly,
-            frames: this._scene.anims.generateFrameNumbers(ImageType.Alien, {start: 0, end: 3}),
-            frameRate: 20,
+            frames: this._scene.anims.generateFrameNumbers(ImageType.Alien, {start: 0, end: 4}),
+            frameRate: 3,
             repeat: -1
         });
 
