@@ -78,10 +78,6 @@ export class ScoreManager {
   }
 
   // Text display for game over and winning
-  setWinText() {
-    this._setBigText("YOU WON!", "PRESS SPACE FOR NEW GAME");
-  }
-
   setGameOverText() {
     this._setBigText("GAME OVER", "PRESS SPACE FOR NEW GAME");
   }

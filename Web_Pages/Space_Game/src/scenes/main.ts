@@ -13,6 +13,7 @@ import { EnemyBullet } from "../interface/enemy-bullet";
 import { ScoreManager } from "../interface/manager/score-manager";
 import { GameState } from "../interface/game-state";
 import { Repair } from "../interface/repair";
+import { Gas} from "../interface/gas"
 
 export class MainScene extends Phaser.Scene {
     state: GameState;
@@ -21,7 +22,10 @@ export class MainScene extends Phaser.Scene {
     scoreManager: ScoreManager;
     bulletTime = 0;
     firingTimer = 0;
-    repairTimer = this.getRandomInt(15000,30000);
+    repairTimer = this.getRandomInt(30000,60000);
+    gasTimer = this.getRandomInt(15000,30000);
+    stealthTimer = this.getRandomInt(60000,90000);
+    stealthDuration = 15000;
     starfield: Phaser.GameObjects.TileSprite;
     player: Phaser.Physics.Arcade.Sprite;
     alienManager: AlienManager;
@@ -42,6 +46,8 @@ export class MainScene extends Phaser.Scene {
         this.load.image(ImageType.Bullet, "/images/bullet.png");
         this.load.image(ImageType.EnemyBullet, "/images/enemy-bullet.png");
         this.load.image(ImageType.Repair, "/images/repair.png")
+        this.load.image(ImageType.Gas, "/images/gas.png")
+        this.load.image(ImageType.Stealth, "/images/stealth.png")
         this.load.spritesheet(ImageType.Alien, "/images/invader.png", {
             frameWidth: 32,
             frameHeight: 36,
@@ -51,12 +57,17 @@ export class MainScene extends Phaser.Scene {
             frameWidth: 128,
             frameHeight: 128,
         });
+
         // Load audio
         this.sound.volume = 0.25;
         this.load.audio(SoundType.Shoot, "/audio/boop.wav");
         this.load.audio(SoundType.Kaboom, "/audio/boom.wav");
         this.load.audio(SoundType.PlayerKaboom, "/audio/player_boom.wav");
         this.load.audio(SoundType.Song, "/audio/boop_song.wav");
+        this.load.audio(SoundType.Gas, "/audio/gas_powerdown.wav");
+        this.load.audio(SoundType.Repair, "/audio/repair_powerup.wav");
+        this.load.audio(SoundType.Stealth, "/audio/stealth_powerup.wav");
+        this.load.audio(SoundType.StealthMode, "/audio/stealth_woowoo.wav");
     }
 
     // This function sets up the playing field for the game on start
@@ -107,7 +118,12 @@ export class MainScene extends Phaser.Scene {
 
         // Update for the repair pack being spawned
         if (this.time.now > this.repairTimer){
-            this._repairSpawm();
+            this._repairSpawn();
+        }
+
+        // Update for the repair pack being spawned
+        if (this.time.now > this.gasTimer){
+            this._gasSpawn();
         }
 
         // Check for bullet collision w/ an alien
@@ -133,6 +149,15 @@ export class MainScene extends Phaser.Scene {
             this.assetManager.repair,
             this.player,
             this.playerGetsRepair,
+            null,
+            this
+        );
+
+        // Check for a repair pack overlap with hero ship
+        this.physics.overlap(
+            this.assetManager.gas,
+            this.player,
+            this.gasHitPlayer,
             null,
             this
         );
@@ -163,15 +188,34 @@ export class MainScene extends Phaser.Scene {
         this.scoreManager.increaseScore();
         if (!this.alienManager.hasAliveAliens) {
             this.scoreManager.increaseScore(1000);
-            this.scoreManager.setWinText();
-            this.state = GameState.Win;
+            this.alienManager.reset();
+            this.assetManager.reset();
         }
     }
 
     // If player gets a repair pack, reset the lives count
     private playerGetsRepair(ship, repair: Repair){
         repair.kill();
+        this.sound.play(SoundType.Repair);
         this.scoreManager.resetLives();
+    }
+
+    // If player hits a gas cloud
+    private gasHitPlayer (ship, gas: Gas){
+        gas.kill();
+        let live: Phaser.GameObjects.Sprite = this.scoreManager.lives.getFirstAlive();
+        if (live) {
+            live.setActive(false).setVisible(false);
+        }
+        this.sound.play(SoundType.Gas);
+
+        if (this.scoreManager.noMoreLives) {
+            this.scoreManager.resetScore();
+            this.scoreManager.setGameOverText();
+            this.assetManager.gameOver();
+            this.state = GameState.GameOver;
+            this.player.disableBody(true, true);
+        }
     }
 
     // This function handles when an enemy bullet collides with the hero ship
@@ -197,7 +241,7 @@ export class MainScene extends Phaser.Scene {
     }
 
     // Function to handle the repair pack spawn
-    private _repairSpawm(){
+    private _repairSpawn(){
         if (!this.player.active) {
             return;
         }
@@ -207,6 +251,20 @@ export class MainScene extends Phaser.Scene {
             repair.move(x);
             let coolDownTime = this.getRandomInt(30000,60000);
             this.repairTimer = this.time.now + coolDownTime;
+        }
+    }
+
+    private _gasSpawn(){
+        if (!this.player.active) {
+            return;
+        }
+        let gas: Gas = this.assetManager.gas.get();
+        if (gas) {
+            let x = this.getRandomInt(50,751);
+            gas.setPosition(x, 50);
+            this.physics.moveToObject(gas, this.player, 250);
+            let coolDownTime = this.getRandomInt(30000,60000);
+            this.gasTimer = this.time.now + coolDownTime;
         }
     }
 

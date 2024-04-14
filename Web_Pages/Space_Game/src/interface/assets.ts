@@ -7,8 +7,10 @@ export enum ImageType {
     Bullet = "bullet",
     Ship = "ship",
     Repair = "repair",
+    Gas = "gas",
     Explosion = "explosion",
     Starfield = "starfield",
+    Stealth = "stealth"
 }
 
 // Audio assets
@@ -16,5 +18,9 @@ export enum SoundType {
     Kaboom = "kaboom",
     PlayerKaboom = 'playerKaboom',
     Shoot = "shoot",
-    Song = "song"
+    Song = "song",
+    Gas = "gas",
+    Repair = "repair",
+    Stealth = "stealth",
+    StealthMode = "stealthMode"
 }
