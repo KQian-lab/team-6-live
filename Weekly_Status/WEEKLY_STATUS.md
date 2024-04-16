@@ -77,3 +77,35 @@
 - Gameplay Code: RNG, Score Items, and player name input
 - Gameplay Design
 - Creative Game Design
+
+
+<img src="images/Screenshot 2024-04-15 181314.png"
+     alt="ScreenShot issue"
+     style="float: left; margin-right: 10px;" />
+
+<img src="images/Screenshot 2024-04-15 181358.png"
+     alt="ScreenShot issue"
+     style="float: left; margin-right: 10px;" />
+
+<img src="images/Screenshot 2024-04-15 181548.png"
+     alt="ScreenShot issue"
+     style="float: left; margin-right: 10px;" />
+
+<img src="images/Screenshot 2024-04-15 181637.png"
+     alt="ScreenShot issue"
+     style="float: left; margin-right: 10px;" />
+
+
+
+## Finished Work
+- A Working Space Game in Phaser.
+- SQL_TESTING.md
+- Repair, Alien, Player Ship, Background, Gas, Bullets, Meteor and XP sprites
+
+
+
+## Work-in-Progress
+- SQL: UnitTests and API (My Personal Best)
+- Gameplay Code: Player name input
+- Flask app
+- Take score from game an insert into DB (js to SQLite)
