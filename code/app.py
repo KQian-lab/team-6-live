@@ -45,7 +45,6 @@ def signin():
 def signup():
     return render_template('signin.html')
 
-
 ## Database part
 
 #dbName = 'teamSix.db' # Store my local scores
