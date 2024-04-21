@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 ## You can use the code below for Flask
 
+#-- Updated the index route
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -15,17 +16,17 @@ def index():
 # def game():
 #     return render_template('webgame.html')
 
-# @app.route('/myBestScore')
-# def myBestScore():
+#@app.route('/myBestScore')
+#def myBestScore():
 #     return render_template('myBestScore.html')
 
 # @app.route('/leaderboard')
 # def leaderboard():
 #     return render_template('leaderboard.html')
 
-# @app.route('/gamerules')
-# def gamerules():
-#     return render_template('gamerules.html')
+@app.route('/gamerules')
+def gamerules():
+    return render_template('gamerules.html')
 
 # @app.route('/settings')
 # def settings():

@@ -1,0 +1,74 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: flex-start; 
+    background-color: #478ead;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    width: 100%;
+    text-align: center;
+    margin-top: 30px; 
+    font-size: 2em; 
+    color: #ffffff; 
+    font-weight: bold;
+    padding: 20px 0; 
+  }
+  
+  .ruleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 100%; 
+    padding: 20px 0; 
+  }
+  
+  .rules {
+    margin: 0 30px; 
+  }
+  
+  .rules button {
+    background-color: #fd6625;
+    color: white;
+    text-transform: uppercase;
+    padding: 35px 25px;
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 1.8vw;
+    cursor: pointer;
+    border-radius: 25px;
+    min-width: 500px; 
+    min-height: 60vh; 
+    border: none;
+    transition: background-color 0.3s;
+    outline: none;
+  }
+  
+  .rules button:hover {
+    background-color: #e67e22;
+  }
+  
+  .btnStack {
+    background-color: #fd6625;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 15px; 
+    margin-bottom: 34px;
+    transition: background-color 0.3s;
+    outline: none;
+    min-width: 20px; 
+    font-weight: bold;
+    font-size: 14px; 
+    cursor: pointer;
+    border-radius: 25px;
+  }
