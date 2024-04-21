@@ -31,40 +31,40 @@ def create(db_filename: str):
     # date will come from datetime.now() and only save the yyyy-mm-dd format as a string
     
     create_players_table =  """
-                               CREATE TABLE IF NOT EXISTS Players
-                               (playerID INTEGER PRIMARY KEY,
+                                CREATE TABLE IF NOT EXISTS Players
+                                (playerID INTEGER PRIMARY KEY,
                                 playerName CHAR(3),
                                 dateCreated VARCHAR(10),
                                 playerEmail VARCHAR(45)
-                               );
+                                );
                             """
     c.execute(create_players_table)
     
     
-    create_scores_table =  """
-                               CREATE TABLE IF NOT EXISTS Scores
-                               (playerID INT,
-                               playerName CHAR(3),
-                               score INT,
-                               date CHAR(10), 
-                               gameID INTEGER PRIMARY KEY
-                               );
+    create_scores_table =   """
+                                CREATE TABLE IF NOT EXISTS Scores
+                                (playerID INT,
+                                playerName CHAR(3),
+                                score INT,
+                                date CHAR(10), 
+                                gameID INTEGER PRIMARY KEY
+                                );
                             """ 
     c.execute(create_scores_table)
     
     
-    create_games_table =  """
-                               CREATE TABLE IF NOT EXISTS Games
-                               (playerID INT,
-                               time INT,
-                               distance REAL,
-                               date VARCHAR(10),
-                               gameID INT
-                               );
+    create_games_table =    """
+                                CREATE TABLE IF NOT EXISTS Games
+                                (playerID INT,
+                                time INT,
+                                distance REAL,
+                                date VARCHAR(10),
+                                gameID INT
+                                );
                             """
     c.execute(create_games_table)
     
-     
+    
     conn.commit()
     conn.close()
     return 0
@@ -100,13 +100,13 @@ def addScore(db_filename: str, playerID: int, playerName:str, score: int):
     conn = sqlite3.connect(db_filename)
     c = conn.cursor()
     addScores = f"""
-                INSERT INTO Scores (playerID, playerName, score, date) VALUES
-                ({playerID},
-                 '{playerName}',
-                 {score},
-                 '{date}'
-                );
-               """
+                    INSERT INTO Scores (playerID, playerName, score, date) VALUES
+                    ({playerID},
+                    '{playerName}',
+                    {score},
+                    '{date}'
+                    );
+                """
     c.execute(addScores)
     conn.commit()
     conn.close()
@@ -141,12 +141,12 @@ def addPlayer(db_filename: str, playerName: str, playerEmail: str) -> int:
     conn = sqlite3.connect(db_filename)
     c = conn.cursor()
     addPlayer = f"""
-                INSERT INTO Players (playerName, dateCreated, playerEmail) VALUES
-                ('{playerName}',
-                 '{date}',
-                 '{playerEmail}'
-                );
-               """
+                    INSERT INTO Players (playerName, dateCreated, playerEmail) VALUES
+                    ('{playerName}',
+                    '{date}',
+                    '{playerEmail}'
+                    );
+                """
     c. execute(addPlayer)
     conn.commit()
     conn.close()

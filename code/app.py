@@ -5,7 +5,7 @@ import dbAPI
 app = Flask(__name__)
 
 
-## Use the code below for Flask
+## You can use the code below for Flask
 
 # @app.route('/')
 # def index():
