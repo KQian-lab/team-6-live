@@ -29,6 +29,9 @@ export class MainScene extends Phaser.Scene {
     stealthDuration = 15000;
     isStealth = false;
     stealthDurationTimer = 0;
+    isVisionImpaired = false;
+    visionImpairmentDuration = 15000;
+    visionImpairmentTimer = 0;
     starfield: Phaser.GameObjects.TileSprite;
     player: Phaser.Physics.Arcade.Sprite;
     alienManager: AlienManager;
@@ -118,6 +121,15 @@ export class MainScene extends Phaser.Scene {
         // update to keep  the aliens firing at the hero
         if (this.time.now > this.firingTimer && !(this.isStealth)) {
             this._enemyFires();
+            if (this.isVisionImpaired){
+                this.assetManager.enemyBullets.setAlpha(0);
+            }
+        }
+
+        if (this.time.now > this.visionImpairmentTimer && this.isVisionImpaired){
+            this.assetManager.enemyBullets.setAlpha(1);
+            this.alienManager.aliens.setAlpha(1);
+            this.isVisionImpaired = false;
         }
 
         // Update for the repair pack being spawned
@@ -215,6 +227,10 @@ export class MainScene extends Phaser.Scene {
             this.scoreManager.increaseScore(1000);
             this.alienManager.reset();
             this.assetManager.reset();
+
+            if (this.isVisionImpaired){
+                this.alienManager.aliens.setAlpha(0);
+            }
         }
     }
 
@@ -236,19 +252,10 @@ export class MainScene extends Phaser.Scene {
     // If player hits a gas cloud
     private gasHitPlayer (ship: Ship, gas: Gas){
         gas.kill();
-        let live: Phaser.GameObjects.Sprite = this.scoreManager.lives.getFirstAlive();
-        if (live) {
-            live.setActive(false).setVisible(false);
-        }
-        this.sound.play(SoundType.Gas);
-
-        if (this.scoreManager.noMoreLives) {
-            this.scoreManager.resetScore();
-            this.scoreManager.setGameOverText();
-            this.assetManager.gameOver();
-            this.state = GameState.GameOver;
-            this.player.disableBody(true, true);
-        }
+        this.isVisionImpaired = true;
+        this.assetManager.enemyBullets.setAlpha(0);
+        this.alienManager.aliens.setAlpha(0);
+        this.visionImpairmentTimer = this.time.now + this.visionImpairmentDuration;
     }
 
     // This function handles when an enemy bullet collides with the hero ship
