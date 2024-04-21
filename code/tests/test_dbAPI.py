@@ -270,7 +270,7 @@ class dbAPITestCase(unittest.TestCase):
         
         # Info to insert into the Scores table to query for the test 
         global db_filename
-        playerID = 1
+        playerID = 2
         playerName = 'TST'
         scores = [
             1,
@@ -314,8 +314,133 @@ class dbAPITestCase(unittest.TestCase):
         assert topTen[7][2] == scores[-8]
         assert topTen[8][2] == scores[-9]
         assert topTen[9][2] == scores[-10]
-        
     
+    def test_getTopTenPersonalScores(self):
+        
+        global db_filename
+        playerID_1 = 3
+        playerName_1 = 'WRG'
+        playerOneScores = [
+            345,
+            573245,
+            354637,
+            2425566,
+            6542,
+            6777854,
+            745678,
+            14566,
+            7888456,
+            5463546,
+            765474765,
+            6543773,
+            34567888756,
+            6543,
+            536774,
+            5636773
+        ]
+        
+        for score in playerOneScores:
+            dbAPI.addScore(db_filename, playerID_1, playerName_1, score)
+            
+        playerID_2 = 4
+        playerName_2 = 'CRT'
+        playerTwoScores= [
+            1325324,
+            5243662,
+            74356,
+            654367788,
+            6345656,
+            24566,
+            26554367,
+            75436645,
+            6543777,
+            645377773,
+            523666655642,
+            4254266,
+            52435666,
+            6543234,
+            2453652,
+            5342,
+            54326462
+        ]
+        
+        for score in playerTwoScores:
+            dbAPI.addScore(db_filename, playerID_2, playerName_2, score)
+            
+        playerID_3 = 5
+        playerName_3 = "WNG"
+        playerThreeScores = [
+            42345,
+            5234,
+            2352666,
+            234566234534266,
+            4235565,
+            5342663462,
+            2346454325,
+            54235,
+            3425666423,
+            4355345,
+            3456643,
+            52436,
+            5234,
+            5,
+            23478,
+            234,
+            8
+        ]
+        
+        for score in playerThreeScores:
+            dbAPI.addScore(db_filename, playerID_3, playerName_3, score)
+            
+        # Grab playerID_2's top ten scores
+        topTen = dbAPI.getTopTenPersonalScores(db_filename, playerID_2)
+        
+        #sort scores for comparrison
+        playerTwoScores.sort()
+        
+        
+        # Check the top ten scores and confirm they have the same playerID and playerName
+        assert topTen[0][0] == playerID_2
+        assert topTen[0][1] == playerName_2
+        assert topTen[0][2] == playerTwoScores[-1]
+        
+        assert topTen[1][0] == playerID_2
+        assert topTen[1][1] == playerName_2
+        assert topTen[1][2] == playerTwoScores[-2]
+        
+        assert topTen[2][0] == playerID_2
+        assert topTen[2][1] == playerName_2
+        assert topTen[2][2] == playerTwoScores[-3]
+        
+        assert topTen[3][0] == playerID_2
+        assert topTen[3][1] == playerName_2
+        assert topTen[3][2] == playerTwoScores[-4]
+        
+        assert topTen[4][0] == playerID_2
+        assert topTen[4][1] == playerName_2
+        assert topTen[4][2] == playerTwoScores[-5]
+        
+        assert topTen[5][0] == playerID_2
+        assert topTen[5][1] == playerName_2
+        assert topTen[5][2] == playerTwoScores[-6]
+        
+        assert topTen[6][0] == playerID_2
+        assert topTen[6][1] == playerName_2
+        assert topTen[6][2] == playerTwoScores[-7]
+        
+        assert topTen[7][0] == playerID_2
+        assert topTen[7][1] == playerName_2
+        assert topTen[7][2] == playerTwoScores[-8]
+        
+        assert topTen[8][0] == playerID_2
+        assert topTen[8][1] == playerName_2
+        assert topTen[8][2] == playerTwoScores[-9]
+        
+        assert topTen[9][0] == playerID_2
+        assert topTen[9][1] == playerName_2
+        assert topTen[9][2] == playerTwoScores[-10]
+        
+        
     
 if __name__ == '__main__':
     unittest.main()    

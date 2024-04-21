@@ -123,7 +123,7 @@ This function will connect to the database file given to add a player to the Pla
 Author(s): Patrick Sharp
 Last Mofdified: 3/17/2024
 """
-def addPlayer(db_filename: str, playerName: str, playerEmail: str):
+def addPlayer(db_filename: str, playerName: str, playerEmail: str) -> int:
     
     # Check if valid playerName
     if type(playerName) is not str or len(playerName) != 3:
@@ -159,7 +159,7 @@ This function will query the Scores table to grab the top ten scores that will b
 Author(s): Patrick Sharp
 Last Mofdified: 3/29/2024
 '''
-def getTopTenScores(db_filename):
+def getTopTenScores(db_filename: str) -> tuple:
     getTopTen = 'SELECT * FROM Scores ORDER BY score DESC LIMIT 10'
     conn = sqlite3.connect(db_filename)
     c = conn.cursor()
@@ -167,3 +167,6 @@ def getTopTenScores(db_filename):
     topTen = c.fetchall()
     conn.close()
     return topTen
+
+def getTopTenPersonalScores(db_filename: str, playerID: int) -> tuple:
+    raise NotImplementedError
