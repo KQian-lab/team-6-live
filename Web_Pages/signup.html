@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up</title>
+<link rel="stylesheet" href="./css/signup.css">
+</head>
+<body>
+
+<div class="signup-page">
+  <div class="welcome-back">
+    <h2>Welcome back Message</h2>
+    <button onclick="location.href='signin.html'">Sign In</button>
+  </div>
+  
+  <div class="signup-form">
+    <h2>Create Account</h2>
+    <form action="/signup" method="post">
+      <input type="text" placeholder="User Name" name="username" required>
+      <input type="email" placeholder="Email Address" name="email" required>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
