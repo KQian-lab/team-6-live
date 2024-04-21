@@ -1,0 +1,103 @@
+body {
+    background-color: #478ead;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.menu-container {
+    display: flex;
+    align-items: flex-start; 
+    justify-content: center; 
+}
+.menu {
+    display: flex;
+    flex-direction: column;
+    margin-right: 100px; 
+}
+button {
+    background-color: #fd6625;
+    border-radius: 25px;
+    color: white;
+    text-transform: uppercase;
+    font-size: 1.8vw; 
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 25px; 
+    margin-bottom: 34px; /* Space between buttons vertically */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    outline: none;
+    min-width: 620px; 
+    font-weight: bold;
+}
+button:hover {
+    background-color: #e67e22;
+}
+.start-game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: stretch; 
+    padding: 0vw;
+    min-height: 633px;
+
+}
+
+.start-game button {
+    background-color: #fd6625;
+    border-radius: 25px;
+    color: white;
+    text-transform: uppercase;
+    font-size: 2vw;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none; 
+    font-weight: bold;
+    flex-grow: 1; /* Grow to fill the container space */
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.start-game button:hover {
+    background-color: #e67e22; 
+}
+
+
+.exit-game {
+    font-size: 1.5vw;
+    padding: 0.5vw;
+    margin-top: 1vw; 
+}
+
+.btnStack {
+    background-color: #fd6625;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 25px; 
+    margin-bottom: 34px;
+    transition: background-color 0.3s;
+    outline: none;
+    min-width: 620px; 
+    font-weight: bold;
+    font-size: 1.8vw; 
+    cursor: pointer;
+    border-radius: 25px;
+  }
+  
+  a.btnStack:hover {
+    background-color: #e67e22;
+  }

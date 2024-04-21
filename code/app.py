@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 ## You can use the code below for Flask
 
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # @app.route('/game')
 # def game():
