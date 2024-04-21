@@ -321,6 +321,13 @@ class dbAPITestCase(unittest.TestCase):
         assert topTen[8][2] == scores[-9]
         assert topTen[9][2] == scores[-10]
     
+    
+    """
+    This test checks for errors in the in the getTopTenPersonalScores() function. 
+    This test also checks that the function works as intended
+    Author(s): Patrick Sharp
+    Last Modified: 4/20/202
+    """
     def test_getTopTenPersonalScores(self):
         
         global db_filename
