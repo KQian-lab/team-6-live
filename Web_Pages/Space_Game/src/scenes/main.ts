@@ -277,6 +277,7 @@ export class MainScene extends Phaser.Scene {
         this.isVisionImpaired = true;
         this.assetManager.enemyBullets.setAlpha(0);
         this.alienManager.aliens.setAlpha(0);
+        this.assetManager.meteor.setAlpha(0);
         this.visionImpairmentTimer = this.time.now + this.visionImpairmentDuration;
     }
     
