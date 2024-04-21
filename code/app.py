@@ -16,21 +16,23 @@ def index():
 # def game():
 #     return render_template('webgame.html')
 
-#@app.route('/myBestScore')
-#def myBestScore():
-#     return render_template('myBestScore.html')
+@app.route('/myBestScore')
+@app.route('/mybestscore')
+def myBestScore():
+     return render_template('myBestScore.html')
 
-# @app.route('/leaderboard')
-# def leaderboard():
-#     return render_template('leaderboard.html')
+@app.route('/leaderboard')
+@app.route('/Leaderboard')
+def leaderboard():
+    return render_template('leaderboard.html')
 
 @app.route('/gamerules')
 def gamerules():
     return render_template('gamerules.html')
 
-# @app.route('/settings')
-# def settings():
-#     return render_template('settings.html')
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
 
 
 ## Database part
