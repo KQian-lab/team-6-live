@@ -15,6 +15,7 @@ import { GameState } from "../interface/game-state";
 import { Repair } from "../interface/repair";
 import { Gas } from "../interface/gas"
 import { Stealth } from "../interface/stealth"
+import { Meteor } from "../interface/meteor"
 
 export class MainScene extends Phaser.Scene {
     state: GameState;
@@ -29,6 +30,7 @@ export class MainScene extends Phaser.Scene {
     stealthDuration = 15000;
     isStealth = false;
     stealthDurationTimer = 0;
+    meteorTimer = 0;
     isVisionImpaired = false;
     visionImpairmentDuration = 15000;
     visionImpairmentTimer = 0;
@@ -54,6 +56,7 @@ export class MainScene extends Phaser.Scene {
         this.load.image(ImageType.Repair, "/images/repair.png")
         this.load.image(ImageType.Gas, "/images/gas.png")
         this.load.image(ImageType.Stealth, "/images/stealth.png")
+        this.load.image(ImageType.Meteor, '/images/meteor.png');
         this.load.spritesheet(ImageType.Alien, "/images/invader.png", {
             frameWidth: 32,
             frameHeight: 36,
@@ -107,6 +110,14 @@ export class MainScene extends Phaser.Scene {
         var music = this.sound.add(SoundType.Song);
         music.setLoop(true);
         music.play();
+
+        //Add loop for meteor spawn
+        this.time.addEvent({
+            delay: 10000, 
+            callback: this._meteorSpawn,
+            callbackScope: this,
+            loop: true
+        });
     }
 
 
@@ -141,7 +152,12 @@ export class MainScene extends Phaser.Scene {
         if (this.time.now > this.gasTimer){
             this._gasSpawn();
         }
-
+        
+        // Update for the meteor being spawned
+        if (this.time.now > this.meteorTimer){
+            this._meteorSpawn();
+        }
+        
         // Update for the stealth pack being spawned
         if (this.time.now > this.stealthTimer){
             this._stealthSpawn();
@@ -195,6 +211,14 @@ export class MainScene extends Phaser.Scene {
             this.assetManager.stealth,
             this.player,
             this.playerGetsStealth,
+            null,
+            this
+        )
+        //Check for meteor overlap with player ship
+        this.physics.overlap(
+            this.assetManager.meteor,
+            this.player,
+            this.meteorHitPlayer,
             null,
             this
         )
@@ -257,7 +281,40 @@ export class MainScene extends Phaser.Scene {
         this.alienManager.aliens.setAlpha(0);
         this.visionImpairmentTimer = this.time.now + this.visionImpairmentDuration;
     }
-
+    
+    //If player hits a meteor
+    private meteorHitPlayer(ship: Ship, meteor: Meteor) {
+        meteor.kill();  // Destroy the meteor
+        let explosion: Explosion = this.assetManager.explosions.get();
+        explosion.setPosition(ship.x, ship.y);
+        explosion.play(AnimationType.Explosion);
+        this.sound.play(SoundType.Kaboom);  // Play explosion sound
+    
+        // Apply damage to the ship, potentially decrementing the life count
+        let live: Phaser.GameObjects.Sprite = this.scoreManager.lives.getFirstAlive();
+        if (live) {
+            live.setActive(false).setVisible(false);  // Decrease life
+        }
+        
+    //This function manages meteor spawning
+    private _meteorSpawn() {
+        if (!this.player.active) {
+            return;
+        }
+        let meteor = this.assetManager.meteor.get();
+        if (meteor) {
+            let x = this.getRandomInt(50, 751);
+            meteor.setPosition(x, 0).setActive(true).setVisible(true);
+            this.physics.world.enable(meteor);
+            meteor.setRandomVelocity();
+            let coolDownTime = this.getRandomInt(10000, 20000);
+            this.meteorTimer = this.time.now + coolDownTime;
+        } else {
+            // Handle the case where the meteor couldn't be retrieved
+            console.error('Could not spawn meteor. No instance available.');
+        }
+    }
+        
     // This function handles when an enemy bullet collides with the hero ship
     private enemyBulletHitPlayer(ship: Ship, enemyBullet: EnemyBullet) {
         let explosion: Explosion = this.assetManager.explosions.get();
