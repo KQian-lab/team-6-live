@@ -24,16 +24,16 @@ export class MainScene extends Phaser.Scene {
     scoreManager: ScoreManager;
     bulletTime = 0;
     firingTimer = 0;
-    repairTimer = this.getRandomInt(30000,60000);
-    gasTimer = this.getRandomInt(45000,60000);
-    stealthTimer = this.getRandomInt(60000,90000);
-    stealthDuration = 15000;
-    isStealth = false;
-    stealthDurationTimer = 0;
+    repairTimer = this.getRandomInt(30000,60000);     // random timer for initial spawn
+    gasTimer = this.getRandomInt(45000,60000);        // random timer for initial spawn
+    stealthTimer = this.getRandomInt(60000,90000);    // random timer for initial spawn
+    stealthDuration = 15000;                          // stealth pack duration
+    isStealth = false;                                // tells if stealth is active
+    stealthDurationTimer = 0;                         // duration timer of a stealth pack
     meteorTimer = 0;
-    isVisionImpaired = false;
-    visionImpairmentDuration = 15000;
-    visionImpairmentTimer = 0;
+    isVisionImpaired = false;                         // tells if player vision is impaired by a gas cloud
+    visionImpairmentDuration = 15000;                 // duration of the impairment
+    visionImpairmentTimer = 0;                        // timer to check if the impairment is over on update
     starfield: Phaser.GameObjects.TileSprite;
     player: Phaser.Physics.Arcade.Sprite;
     alienManager: AlienManager;
@@ -110,14 +110,6 @@ export class MainScene extends Phaser.Scene {
         var music = this.sound.add(SoundType.Song);
         music.setLoop(true);
         music.play();
-
-        //Add loop for meteor spawn
-        this.time.addEvent({
-            delay: 10000, 
-            callback: this._meteorSpawn,
-            callbackScope: this,
-            loop: true
-        });
     }
 
 
@@ -130,13 +122,14 @@ export class MainScene extends Phaser.Scene {
         this.shipKeyboardHandler();
 
         // update to keep  the aliens firing at the hero
-        if (this.time.now > this.firingTimer && !(this.isStealth)) {
+        if (this.time.now > this.firingTimer && !(this.isStealth)) {   // If stealth mod is active, enemies do not shoot
             this._enemyFires();
             if (this.isVisionImpaired){
-                this.assetManager.enemyBullets.setAlpha(0);
+                this.assetManager.enemyBullets.setAlpha(0); // if vision is impaired hide bullets
             }
         }
 
+        // update to restore vision
         if (this.time.now > this.visionImpairmentTimer && this.isVisionImpaired){
             this.assetManager.enemyBullets.setAlpha(1);
             this.alienManager.aliens.setAlpha(1);
@@ -253,7 +246,7 @@ export class MainScene extends Phaser.Scene {
             this.assetManager.reset();
 
             if (this.isVisionImpaired){
-                this.alienManager.aliens.setAlpha(0);
+                this.alienManager.aliens.setAlpha(0); // make aliens spawn invisible when vision is impaired
             }
         }
     }
@@ -265,6 +258,7 @@ export class MainScene extends Phaser.Scene {
         this.scoreManager.resetLives();
     }
 
+    // If player gets a stealth mod, make them transparent and let the game know to make enemies not shoot
     private playerGetsStealth(ship: Ship, stealth: Stealth){
         stealth.kill();
         this.sound.play(SoundType.Stealth);
@@ -352,6 +346,7 @@ export class MainScene extends Phaser.Scene {
         }
     }
 
+    // function to spawn a gas cloud
     private _gasSpawn(){
         if (!this.player.active) {
             return;
@@ -361,11 +356,12 @@ export class MainScene extends Phaser.Scene {
             let x = this.getRandomInt(50,751);
             gas.setPosition(x, 50);
             this.physics.moveToObject(gas, this.player, 250);
-            let coolDownTime = this.getRandomInt(60000,90000);
+            let coolDownTime = this.getRandomInt(60000,90000);   // random cool down time (1 - 1.5 min)
             this.gasTimer = this.time.now + coolDownTime;
         }
     }
 
+    // function to spawn a stealth mod
     private _stealthSpawn (){
         if (!this.player.active) {
             return;
@@ -374,7 +370,7 @@ export class MainScene extends Phaser.Scene {
         if (stealth) {
             let x = this.getRandomInt(50,751);
             stealth.move(x);
-            let coolDownTime = this.getRandomInt(60000,90000);
+            let coolDownTime = this.getRandomInt(60000,90000);      // random cool down time (1 - 1.5 min)
             this.stealthTimer = this.time.now + coolDownTime + this.stealthDuration;
         }
     }
