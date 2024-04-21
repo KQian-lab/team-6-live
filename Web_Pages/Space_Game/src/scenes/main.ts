@@ -24,7 +24,7 @@ export class MainScene extends Phaser.Scene {
     bulletTime = 0;
     firingTimer = 0;
     repairTimer = this.getRandomInt(30000,60000);
-    gasTimer = this.getRandomInt(15000,30000);
+    gasTimer = this.getRandomInt(45000,60000);
     stealthTimer = this.getRandomInt(60000,90000);
     stealthDuration = 15000;
     isStealth = false;
@@ -303,7 +303,7 @@ export class MainScene extends Phaser.Scene {
             let x = this.getRandomInt(50,751);
             gas.setPosition(x, 50);
             this.physics.moveToObject(gas, this.player, 250);
-            let coolDownTime = this.getRandomInt(30000,60000);
+            let coolDownTime = this.getRandomInt(60000,90000);
             this.gasTimer = this.time.now + coolDownTime;
         }
     }
