@@ -34,6 +34,17 @@ def gamerules():
 def settings():
     return render_template('settings.html')
 
+@app.route('/sign-in')
+@app.route('/signin')
+def signin():
+    return render_template('signin.html')
+
+
+@app.route('/sign-up')
+@app.route('/signup')
+def signup():
+    return render_template('signin.html')
+
 
 ## Database part
 
