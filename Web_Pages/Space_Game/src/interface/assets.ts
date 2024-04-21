@@ -10,7 +10,8 @@ export enum ImageType {
     Gas = "gas",
     Explosion = "explosion",
     Starfield = "starfield",
-    Stealth = "stealth"
+    Stealth = "stealth",
+    Meteor = "meteor"
 }
 
 // Audio assets
