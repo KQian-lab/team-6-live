@@ -133,6 +133,7 @@ export class MainScene extends Phaser.Scene {
         if (this.time.now > this.visionImpairmentTimer && this.isVisionImpaired){
             this.assetManager.enemyBullets.setAlpha(1);
             this.alienManager.aliens.setAlpha(1);
+            this.assetManager.meteor.setAlpha(1);
             this.isVisionImpaired = false;
         }
 
@@ -149,6 +150,9 @@ export class MainScene extends Phaser.Scene {
         // Update for the meteor being spawned
         if (this.time.now > this.meteorTimer){
             this._meteorSpawn();
+            if (this.isVisionImpaired){
+                this.assetManager.meteor.setAlpha(0);   // if vision is impaired hide meteor
+            }
         }
         
         // Update for the stealth pack being spawned
