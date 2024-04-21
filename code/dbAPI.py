@@ -1,7 +1,7 @@
 
 """
 This is the datasbase API for the Team Six Project
-Last Modifeied: 3/29/2024 By: Patrick Sharp
+Last Modifeied: 4/20/2024 By: Patrick Sharp
 """
 
 
@@ -168,6 +168,14 @@ def getTopTenScores(db_filename: str) -> tuple:
     conn.close()
     return topTen
 
+
+'''
+@Return a tuple of the top ten personal scores
+This function will query the Scores table to grab the top ten scores 
+from a given playerID that will be used for the personal best leaderboard
+Author(s): Patrick Sharp
+Last Mofdified: 4/20/2024
+'''
 def getTopTenPersonalScores(db_filename: str, playerID: int) -> tuple:
     getTopTen = f"SELECT * FROM Scores WHERE playerID = {playerID} ORDER BY score DESC LIMIT 10"
     conn = sqlite3.connect(db_filename)

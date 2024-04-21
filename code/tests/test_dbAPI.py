@@ -1,7 +1,7 @@
 
 """
 These are the unit tests for the datasbase API used in the Team Six Project 
-Last Modifeied: 3/29/2024 By: Patrick Sharp
+Last Modifeied: 4/20/2024 By: Patrick Sharp
 """
 
 
@@ -266,6 +266,12 @@ class dbAPITestCase(unittest.TestCase):
                 
 
     
+    """
+    This test checks for errors in the in the getTopTenScores() function. 
+    This test also checks that the function works as intended
+    Author(s): Patrick Sharp
+    Last Modified: 3/29/202
+    """
     def test_getTopTenScores(self):
         
         # Info to insert into the Scores table to query for the test 
@@ -318,6 +324,8 @@ class dbAPITestCase(unittest.TestCase):
     def test_getTopTenPersonalScores(self):
         
         global db_filename
+        
+        # Define the first player and their scores
         playerID_1 = 3
         playerName_1 = 'WRG'
         playerOneScores = [
@@ -339,9 +347,11 @@ class dbAPITestCase(unittest.TestCase):
             5636773
         ]
         
+        # insert scores
         for score in playerOneScores:
             dbAPI.addScore(db_filename, playerID_1, playerName_1, score)
-            
+        
+        # Define the second player and their scores
         playerID_2 = 4
         playerName_2 = 'CRT'
         playerTwoScores= [
@@ -364,9 +374,11 @@ class dbAPITestCase(unittest.TestCase):
             54326462
         ]
         
+        # insert scores
         for score in playerTwoScores:
             dbAPI.addScore(db_filename, playerID_2, playerName_2, score)
-            
+        
+        # Define the third player and their scores
         playerID_3 = 5
         playerName_3 = "WNG"
         playerThreeScores = [
@@ -389,6 +401,7 @@ class dbAPITestCase(unittest.TestCase):
             8
         ]
         
+        # insert scores
         for score in playerThreeScores:
             dbAPI.addScore(db_filename, playerID_3, playerName_3, score)
             
