@@ -4,6 +4,7 @@ import { Explosion } from "../explosion";
 import { Repair } from "../repair";
 import { Gas } from "../gas";
 import { Stealth } from "../stealth";
+import { Meteor } from "../meteor";
 
 // Class that handles creation of new assets when the game is in play (bullets and explosions) and when the game is over
 export class AssetManager {
@@ -15,6 +16,7 @@ export class AssetManager {
     repair: Phaser.Physics.Arcade.Group;
     gas: Phaser.Physics.Arcade.Group;
     stealth: Phaser.Physics.Arcade.Group;
+    meteor: Phaser.Physics.Arcade.Group;
 
     constructor(private _scene: Phaser.Scene) {
         this.bullets = this._createBullets();
@@ -23,6 +25,7 @@ export class AssetManager {
         this.repair = this._createRepair();
         this.gas = this._createGas();
         this.stealth = this._createStealth();
+        this.meteor = this._createMeteor();
     }
 
     // clears bullets when the game is ove
@@ -32,6 +35,7 @@ export class AssetManager {
         this.repair.clear(true, true)
         this.gas.clear(true, true)
         this.stealth.clear(true, true)
+        this.meteor.clear(true, true)
     }
 
     // resets the assets when the game is restarted
@@ -41,6 +45,7 @@ export class AssetManager {
         this._createRepair();
         this._createGas();
         this._createStealth();
+        this._createMeteor();
     }
     
 
@@ -100,5 +105,12 @@ export class AssetManager {
             runChildUpdate: true
         });
         return stealth
+    }
+    private _createMeteor(): Phaser.Physics.Arcade.Group {
+        let meteor = this._scene.physics.add.group({
+            classType: Meteor,
+            runChildUpdate: true
+        });
+        return meteor;
     }
 }
