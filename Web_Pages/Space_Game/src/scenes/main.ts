@@ -295,6 +295,7 @@ export class MainScene extends Phaser.Scene {
         if (live) {
             live.setActive(false).setVisible(false);  // Decrease life
         }
+    }
         
     //This function manages meteor spawning
     private _meteorSpawn() {
