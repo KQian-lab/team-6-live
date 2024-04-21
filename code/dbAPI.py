@@ -169,4 +169,10 @@ def getTopTenScores(db_filename: str) -> tuple:
     return topTen
 
 def getTopTenPersonalScores(db_filename: str, playerID: int) -> tuple:
-    raise NotImplementedError
+    getTopTen = f"SELECT * FROM Scores WHERE playerID = {playerID} ORDER BY score DESC LIMIT 10"
+    conn = sqlite3.connect(db_filename)
+    c = conn.cursor()
+    c.execute(getTopTen)
+    topTen = c.fetchall()
+    conn.close()
+    return topTen
