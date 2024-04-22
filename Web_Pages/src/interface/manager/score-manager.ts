@@ -16,15 +16,15 @@ export class ScoreManager {
       if (err)console.error(err);
       else console.log("Successfully connected to the database")
     });
-    //try{
+    try{
       const sql_statement = 'INSERT INTO Scores (playerID, playerName, score, date) VALUES (?,?,?,?)'
       db.run(sql_statement, [playerID, playerName, score, date], (err) =>{
       if(err) console.error(err)
     });
     }catch (error){
     console.log(error);
-    }
-  }
+    }}
+  
 
 
 
