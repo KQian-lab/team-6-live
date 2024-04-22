@@ -10,7 +10,6 @@ export class ScoreManager {
   // This will be the function that inserts the score to our sqlite db (Connects successfully to the db)
   private addScoreToDB(playerID, playerName, score, date){
     const sqlite = require("sqlite3") .verbose();
-    const axios = require("axios");
 
     // Connect to db
     const db = new sqlite.Database("../../../../code/teamSix.db", sqlite.OPEN_READWRITE, (err)=>{
@@ -18,13 +17,13 @@ export class ScoreManager {
       else console.log("Successfully connected to the database")
     });
     //try{
-      //const sql_statement = 'INSERT INTO Scores (playerID, playerName, score, date) VALUES (?,?,?,?)'
-      //db.run(sql_statement, [playerID, playerName, score, date], (err) =>{
-      //if(err) console.error(err)
-    //});
-    //}catch (error){
-     //console.log(error);
-    //}
+      const sql_statement = 'INSERT INTO Scores (playerID, playerName, score, date) VALUES (?,?,?,?)'
+      db.run(sql_statement, [playerID, playerName, score, date], (err) =>{
+      if(err) console.error(err)
+    });
+    }catch (error){
+    console.log(error);
+    }
   }
 
 
