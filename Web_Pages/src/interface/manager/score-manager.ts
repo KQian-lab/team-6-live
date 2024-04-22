@@ -9,7 +9,7 @@ export class ScoreManager {
 
   // This will be the function that inserts the score to our sqlite db (Connects successfully to the db)
   private addScoreToDB(playerID, playerName, score, date){
-    const sqlite = require("splite3") .verbose();
+    const sqlite = require("sqlite3") .verbose();
     const axios = require("axios");
 
     // Connect to db
