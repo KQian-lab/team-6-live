@@ -12,6 +12,9 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+
+# app = Flask(__name__, static_folder='Space_Game')
+
 # @app.route('/game')
 # def game():
 #     return render_template('webgame.html')
@@ -19,7 +22,7 @@ def index():
 @app.route('/myBestScore')
 @app.route('/mybestscore')
 def myBestScore():
-     return render_template('myBestScore.html')
+    return render_template('myBestScore.html')
 
 @app.route('/leaderboard')
 @app.route('/Leaderboard')

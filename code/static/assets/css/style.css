@@ -1,0 +1,60 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --dkClr:#181818;
+  --liClr:whitesmoke;
+  --accClr:#0D0D35;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--dkClr);
+}
+
+body,
+html {
+  height: 100%;
+}
+body {
+  background-color: var(--dkClr);
+  color: var(--liClr);
+  display: -webkit-box;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  min-height: 100vh;
+}
+
+header,footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+main{
+  flex:1;
+  display: flex;
+}
+
+#SpaceGame {
+  display: flex;
+  min-height: 300px;
+}
+
+#SpaceGame canvas {
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
