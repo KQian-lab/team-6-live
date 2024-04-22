@@ -7,6 +7,28 @@ export class ScoreManager {
   line2Text: Phaser.GameObjects.Text;
   lives: Phaser.Physics.Arcade.Group;
 
+  // This will be the function that inserts the score to our sqlite db (Connects successfully to the db)
+  private addScoreToDB(playerID, playerName, score, date){
+    const sqlite = require("splite3") .verbose();
+    const axios = require("axios");
+
+    // Connect to db
+    const db = new sqlite.Database("../../../../code/teamSix.db", sqlite.OPEN_READWRITE, (err)=>{
+      if (err)console.error(err);
+      else console.log("Successfully connected to the database")
+    });
+    //try{
+      //const sql_statement = 'INSERT INTO Scores (playerID, playerName, score, date) VALUES (?,?,?,?)'
+      //db.run(sql_statement, [playerID, playerName, score, date], (err) =>{
+      //if(err) console.error(err)
+    //});
+    //}catch (error){
+     //console.log(error);
+    //}
+  }
+
+
+
   // checks for a game over
   get noMoreLives() {
     return this.lives.countActive(true) === 0;
@@ -120,3 +142,5 @@ export class ScoreManager {
     return `${num}`.padStart(4, "0");
   }
 }
+
+

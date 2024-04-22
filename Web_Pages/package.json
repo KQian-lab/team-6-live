@@ -2,7 +2,6 @@
   "name": "spacegame",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -13,6 +12,7 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "phaser": "^3.80.1"
+    "phaser": "^3.80.1",
+    "sqlite3": "^5.1.7"
   }
 }
