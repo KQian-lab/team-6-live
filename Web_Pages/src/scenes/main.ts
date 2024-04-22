@@ -35,6 +35,7 @@ export class MainScene extends Phaser.Scene {
     visionImpairmentDuration = 15000;                 // duration of the impairment
     visionImpairmentTimer = 0;                        // timer to check if the impairment is over on update
     starfield: Phaser.GameObjects.TileSprite;
+    haze: Phaser.GameObjects.Image;
     player: Phaser.Physics.Arcade.Sprite;
     alienManager: AlienManager;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -51,6 +52,7 @@ export class MainScene extends Phaser.Scene {
         // Load images
         this.load.setBaseURL("/assets");
         this.load.image(ImageType.Starfield, "/images/starfield.png");
+        this.load.image(ImageType.Haze, "/images/hazyVision.png")
         this.load.image(ImageType.Bullet, "/images/bullet.png");
         this.load.image(ImageType.EnemyBullet, "/images/enemy-bullet.png");
         this.load.image(ImageType.Repair, "/images/repair.png")
@@ -94,6 +96,9 @@ export class MainScene extends Phaser.Scene {
         );
         this.player = Ship.create(this);
         this.alienManager = new AlienManager(this);
+        this.haze = this.add
+            .image(400, 300, ImageType.Haze)
+        this.haze.visible = false;
         this.scoreManager = new ScoreManager(this);
         
 
@@ -118,6 +123,7 @@ export class MainScene extends Phaser.Scene {
     update() {
         // Make the background move
         this.starfield.tilePositionY -= 0.5;
+        
 
         this.shipKeyboardHandler();
 
@@ -125,12 +131,13 @@ export class MainScene extends Phaser.Scene {
         if (this.time.now > this.firingTimer && !(this.isStealth)) {   // If stealth mod is active, enemies do not shoot
             this._enemyFires();
             if (this.isVisionImpaired){
-                this.assetManager.enemyBullets.setAlpha(0); // if vision is impaired hide bullets
+                this.assetManager.enemyBullets.setAlpha(0.1); // if vision is impaired hide bullets
             }
         }
 
         // update to restore vision
         if (this.time.now > this.visionImpairmentTimer && this.isVisionImpaired){
+            this.haze.visible = false;
             this.assetManager.enemyBullets.setAlpha(1);
             this.alienManager.aliens.setAlpha(1);
             this.assetManager.meteor.setAlpha(1);
@@ -140,6 +147,9 @@ export class MainScene extends Phaser.Scene {
         // Update for the repair pack being spawned
         if (this.time.now > this.repairTimer){
             this._repairSpawn();
+            if (this.isVisionImpaired){
+                this.assetManager.repair.setAlpha(0.1);   // if vision is impaired hide repair pack
+            }
         }
 
         // Update for the gas being spawned
@@ -151,13 +161,16 @@ export class MainScene extends Phaser.Scene {
         if (this.time.now > this.meteorTimer){
             this._meteorSpawn();
             if (this.isVisionImpaired){
-                this.assetManager.meteor.setAlpha(0);   // if vision is impaired hide meteor
+                this.assetManager.meteor.setAlpha(0.1);   // if vision is impaired hide meteor
             }
         }
         
         // Update for the stealth pack being spawned
         if (this.time.now > this.stealthTimer){
             this._stealthSpawn();
+            if (this.isVisionImpaired){
+                this.assetManager.stealth.setAlpha(0.1);   // if vision is impaired hide stealth pack
+            }
         }
 
         // Update for ending the stealth power-up
@@ -250,7 +263,7 @@ export class MainScene extends Phaser.Scene {
             this.assetManager.reset();
 
             if (this.isVisionImpaired){
-                this.alienManager.aliens.setAlpha(0); // make aliens spawn invisible when vision is impaired
+                this.alienManager.aliens.setAlpha(0.1); // make aliens spawn invisible when vision is impaired
             }
         }
     }
@@ -275,9 +288,10 @@ export class MainScene extends Phaser.Scene {
     private gasHitPlayer (ship: Ship, gas: Gas){
         gas.kill();
         this.isVisionImpaired = true;
-        this.assetManager.enemyBullets.setAlpha(0);
-        this.alienManager.aliens.setAlpha(0);
-        this.assetManager.meteor.setAlpha(0);
+        this.haze.visible = true;
+        this.assetManager.enemyBullets.setAlpha(0.1);
+        this.alienManager.aliens.setAlpha(0.1);
+        this.assetManager.meteor.setAlpha(0.1);
         this.visionImpairmentTimer = this.time.now + this.visionImpairmentDuration;
     }
     

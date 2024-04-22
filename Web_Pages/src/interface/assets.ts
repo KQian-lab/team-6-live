@@ -11,7 +11,8 @@ export enum ImageType {
     Explosion = "explosion",
     Starfield = "starfield",
     Stealth = "stealth",
-    Meteor = "meteor"
+    Meteor = "meteor",
+    Haze = 'haze'
 }
 
 // Audio assets
